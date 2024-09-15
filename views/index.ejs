@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Habit Tracker</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <style>
+            body {
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                background-color: #4caf50;
+                color: white;
+                text-align: center;
+                padding: 1em 0;
+            }
+
+            main {
+                padding: 1em;
+            }
+
+            .habit-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: white;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            .habit-name {
+                flex: 1;
+                font-size: 1.2em;
+            }
+
+            .habit-status {
+                display: flex;
+                justify-content: space-between;
+                flex: 3;
+                gap: 5px;
+            }
+
+            .status-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 50px;
+                padding-inline: 0.5em;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background-color: #f1f1f1;
+                position: relative;
+                flex-grow: 1;
+            }
+
+            .dropdown-button {
+                border: none;
+            }
+
+            .status-date {
+                font-size: 0.8em;
+            }
+
+            .status-done {
+                color: green;
+                font-size: 1em;
+            }
+
+            .status-not-done {
+                color: red;
+                font-size: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Habit Tracker</h1>
+        </header>
+        <main>
+            <div class="w-100">
+                <form class="row g-3 mb-3" action="/add" method="POST">
+                    <div class="col-auto">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="name"
+                            placeholder="New Habit"
+                            required
+                        />
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary mb-3">Add Habit</button>
+                    </div>
+                </form>
+
+                <ul class="list-group">
+                    <% habits.forEach(habit => { %>
+                    <li class="list-group-item habit-item">
+                        <div class="habit-name"><%= habit.name %></div>
+                        <div class="habit-status">
+                            <% habit.last7DaysStatus.forEach(statusObj => { %>
+                            <div
+                                class="status-box"
+                                style="background-color: <%= statusObj.status === 'Done' ? '#6ce7717a' : (statusObj.status === 'Not Done' ? '#fbd4d4' : '#f1f1f1') %>;"
+                            >
+                                <!-- #6ce7717a -->
+                                <!-- #fbd4d4 -->
+                                <div
+                                    class="w-100 d-flex justify-content-between align-items-center"
+                                >
+                                    <div class="status-date">
+                                        <%= moment(statusObj.date).format('YYYY-MM-DD') %>
+                                    </div>
+                                    <form action="/update" method="POST">
+                                        <input type="hidden" name="id" value="<%= habit._id %>" />
+                                        <input
+                                            type="hidden"
+                                            name="date"
+                                            value="<%= statusObj.date %>"
+                                        />
+                                        <div class="dropdown">
+                                            <button
+                                                class="dropdown-button dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                style="background: transparent"
+                                            >
+                                                <% if (statusObj.status === 'Done') { %>
+                                                <i class="fas fa-check status-done"></i>
+                                                <% } else if (statusObj.status === 'Not Done') { %>
+                                                <i class="fas fa-times status-not-done"></i>
+                                                <% } %>
+                                            </button>
+                                            <ul
+                                                class="dropdown-menu"
+                                                aria-labelledby="dropdownMenuButton"
+                                            >
+                                                <li>
+                                                    <button
+                                                        class="dropdown-item"
+                                                        type="submit"
+                                                        name="status"
+                                                        value="None"
+                                                    >
+                                                        None
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        class="dropdown-item"
+                                                        type="submit"
+                                                        name="status"
+                                                        value="Done"
+                                                    >
+                                                        Done
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        class="dropdown-item"
+                                                        type="submit"
+                                                        name="status"
+                                                        value="Not Done"
+                                                    >
+                                                        Not Done
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <% }) %>
+                        </div>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </main>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
