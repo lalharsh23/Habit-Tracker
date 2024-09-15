@@ -52,7 +52,7 @@
 <ol>
     <li>
         Clone the repository:
-        <pre><code>git clone &lt;repository_url&gt; cd habit-tracker </code></pre>
+        <pre><code>git clone https://github.com/lalharsh23/habit-tracker.git cd habit-tracker </code></pre>
     </li>
     <li>
         Install dependencies:
@@ -78,4 +78,4 @@
 <h2 id="author">Author</h2>
 <p>Created by <strong>Harsh Lal</strong>.</p>
 <h2 id="deployed-link">Deployed Link</h2>
-<p>The app is deployed at: <a href="<your_deployed_link_here>">Your Deployed App Link</a></p>
+<p><a href="https://habit-tracker-n0rf.onrender.com">Click here</a></p>
